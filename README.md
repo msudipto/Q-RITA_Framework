@@ -248,11 +248,11 @@ If you use this repository in academic work, please cite the associated paper an
 Bibtex repository citation:
 
 ```bibtex
-@misc{qrita_framework_2026,
-  author       = {Shakil Ahmed and Mubassir Sudipto and Ashfaq Khokhar},
+@misc{qrita_framework_2025,
+  author       = {Shakil Ahmed and Mubassir Serneabat Sudipto and Ashfaq Khokhar},
   title        = {Q-RITA Framework: Deadline-Aware Entanglement Routing for RIS-Assisted Terrestrial Quantum Links},
-  year         = {2026},
-  howpublished = {\url{https://github.com/<your-username>/Q-RITA}},
+  year         = {2025},
+  howpublished = {\url{https://github.com/msudipto/Q-RITA_Framework}},
   note         = {Code repository}
 }
 ```
