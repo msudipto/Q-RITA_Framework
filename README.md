@@ -261,8 +261,8 @@ Bibtex repository citation:
 
 ## License  
 
-Add the repository license here if one is selected for public release.  
-If the repository is distributed under a specific license, reference the corresponding `LICENSE` file in this section.
+This repository is released under the **MIT License**.  
+See the [`LICENSE`](LICENSE) file for complete terms.
 
 ---
 
