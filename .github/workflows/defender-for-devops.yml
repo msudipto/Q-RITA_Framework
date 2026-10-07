@@ -24,9 +24,10 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '25 5 * * 1'
+    - cron: '30 0 * * 5'
 
 permissions:
+  contents: read
   security-events: write
 
 jobs:
