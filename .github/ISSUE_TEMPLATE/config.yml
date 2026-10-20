@@ -1,0 +1,12 @@
+# Disable generic blank issues for contributors to ensure structured Qiskit/RIS logs are provided
+blank_issues_enabled: false
+
+# Direct community members to relevant repository and contact points
+contact_links:
+  - name: IBM Quantum Hardware Dashboard
+    url: https://ibm.com
+    about: Check your active API tokens, deployment queue depths, and hardware backend calibration logs.
+    
+  - name: Academic Correspondence Contact
+    url: mailto:shakil@iastate.edu
+    about: Reach out directly to the principal investigators regarding architectural extensions or data sharing.
