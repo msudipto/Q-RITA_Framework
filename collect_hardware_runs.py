@@ -40,10 +40,9 @@ def _extract_quasidist(res):
     """
     # Newer SamplerResult API
     if hasattr(res, "quasi_dists"):
-        try:
-            return res.quasi_dists[0]
-        except Exception:
-            pass
+        qd = getattr(res, "quasi_dists", None)
+        if isinstance(qd, list) and qd:
+            return qd[0]
 
     # Try a dict view if available
     try:
@@ -52,51 +51,61 @@ def _extract_quasidist(res):
         d = None
 
     # Common nested shapes seen in recent releases
-    cand = None
+    def _first_from(cand):
+        if isinstance(cand, list) and cand:
+            return cand[0]
+        if isinstance(cand, dict):
+            return cand
+        return None
+
+    def _results0_data(payload):
+        if not isinstance(payload, dict):
+            return None
+        results = payload.get("results")
+        if not isinstance(results, list) or not results:
+            return None
+        first = results[0]
+        if not isinstance(first, dict):
+            return None
+        data = first.get("data")
+        return data if isinstance(data, dict) else None
+
     if isinstance(d, dict):
+        data = _results0_data(d)
         # 1) {'results': [{'data': {'quasi_dists': [ {...} ]}}]}
-        try:
-            cand = d["results"][0]["data"].get("quasi_dists")
-            if isinstance(cand, list) and cand:
-                return cand[0]
-            if isinstance(cand, dict):
-                return cand
-        except Exception:
-            pass
+        cand = _first_from(data.get("quasi_dists")) if data else None
+        if cand is not None:
+            return cand
         # 2) {'results': [{'data': {'quasi_probabilities': {...}}}]}
-        try:
-            cand = d["results"][0]["data"].get("quasi_probabilities")
-            if isinstance(cand, dict):
-                return cand
-        except Exception:
-            pass
+        cand = _first_from(data.get("quasi_probabilities")) if data else None
+        if cand is not None:
+            return cand
         # 3) {'results': [{'data': {'meas': {'quasi_dists': [ {...} ]}}}]}
-        try:
-            cand = d["results"][0]["data"]["meas"].get("quasi_dists")
-            if isinstance(cand, list) and cand:
-                return cand[0]
-        except Exception:
-            pass
+        if data:
+            meas = data.get("meas")
+            if isinstance(meas, dict):
+                cand = _first_from(meas.get("quasi_dists"))
+                if cand is not None:
+                    return cand
 
     # Last resort: private field sometimes present
-    try:
-        r = getattr(res, "_result", None)
-        if isinstance(r, dict):
-            cand = r.get("quasi_dists") or r.get("quasi_probabilities")
-            if isinstance(cand, list) and cand:
-                return cand[0]
-            if isinstance(cand, dict):
-                return cand
-            # nested under results[0].data
-            rr0 = r.get("results", [{}])[0]
-            data = rr0.get("data", {})
-            cand = data.get("quasi_dists") or data.get("quasi_probabilities")
-            if isinstance(cand, list) and cand:
-                return cand[0]
-            if isinstance(cand, dict):
-                return cand
-    except Exception:
-        pass
+    r = getattr(res, "_result", None)
+    if isinstance(r, dict):
+        cand = _first_from(r.get("quasi_dists"))
+        if cand is not None:
+            return cand
+        cand = _first_from(r.get("quasi_probabilities"))
+        if cand is not None:
+            return cand
+
+        # nested under results[0].data
+        data = _results0_data(r)
+        cand = _first_from(data.get("quasi_dists")) if data else None
+        if cand is not None:
+            return cand
+        cand = _first_from(data.get("quasi_probabilities")) if data else None
+        if cand is not None:
+            return cand
 
     # If nothing matched, return empty dict; caller will handle as 0.0 probs.
     return {}
