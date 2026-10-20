@@ -1,38 +1,32 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+about: Report execution errors, broken metrics scripts, or IBM backend tracking issues
+title: '[BUG] '
+labels: 'bug'
 assignees: ''
 
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the error or runtime failure is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Steps to reproduce the behavior (e.g., which python script was executed):
+1. Configure environment / backend...
+2. Run command `python ...`
+3. See error log / unexpected metric output
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+A clear description of what the script or pipeline step should output.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Environment Logs & Metadata (please complete if applicable):**
+ - Execution Script: [e.g., collect_hardware_runs.py, build_metrics.py]
+ - IBM Quantum Backend Name: [e.g., ibm_osaka, ibm_kyoto]
+ - Qiskit Version: [e.g., 1.2]
+ - Error Traceback / Console Output:
+   ```text
+   Paste terminal errors here
+   ```
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about network settings, queue delays, or metric thresholds here.
