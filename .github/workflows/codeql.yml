@@ -17,17 +17,19 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '45 6 * * 6' # Runs every Saturday at 06:45 UTC
+    - cron: '45 6 * * 6'
+
+# Explicitly defining permissions at the top-level clears the Checkov security alert
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      packages: read
-      actions: read
-      contents: read
 
     strategy:
       fail-fast: false
@@ -47,6 +49,11 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v4
+      with:
+        category: "/language:${{ matrix.language }}"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
